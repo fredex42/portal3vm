@@ -23,15 +23,23 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-    cd /media/sf_work/pluto
-    /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
-
+    yum update
     for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
+      if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
+        rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
+      fi
       ln -s "$d" "/opt/cantemo/portal/portal/plugins"
     done
 
     for d in `find /media/sf_work/portal-plugins-public/ -type d -iname gnm*`; do
+      if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
+        rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
+      fi
       ln -s "$d" "/opt/cantemo/portal/portal/plugins"
     done
+
+    cd /media/sf_work/pluto
+    /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
   SHELL
+
 end

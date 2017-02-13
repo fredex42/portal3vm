@@ -24,13 +24,13 @@ echo ------------------------------
 echo Checking system...
 echo ------------------------------
 GITEXE=`which git`
-if [ ${GITEXE} == "" ] -or [ ! -x "${GITEXE}" ]; then
+if [ ${GITEXE} == "" ] || [ ! -x "${GITEXE}" ]; then
   echo You do not appear to have git installed. This is necessary to checkout source code.
   echo Please install git for your platform and then re-run.
   exit 1
 fi
 VAGRANTEXE=`which vagrant`
-if [ ${VAGRANTEXE} == "" ] -or [ ! -x "${VAGRANTEXE}"]; then
+if [ ${VAGRANTEXE} == "" ] || [ ! -x "${VAGRANTEXE}"]; then
   echo You do not appear to have Vagrant installed. This is necessary to set up the VM.
   echo Please visit https://vagrantup.com and install it for your platform.
   exit 1
