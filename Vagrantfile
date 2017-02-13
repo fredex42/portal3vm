@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     yum clean expire-cache
+    /opt/cantemo/python/bin/pip install django_debug_toolbar==1.3
     for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
       if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
         rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
