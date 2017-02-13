@@ -21,5 +21,17 @@ Vagrant.configure("2") do |config|
     vb.memory = "8192"
     vb.cpus = 4
   end
-  
+
+  config.vm.provision "shell", inline: <<-SHELL
+    cd /media/sf_work/pluto
+    /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
+
+    for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
+      ln -s "$d" "/opt/cantemo/portal/portal/plugins"
+    done
+
+    for d in `find /media/sf_work/portal-plugins-public/ -type d -iname gnm*`; do
+      ln -s "$d" "/opt/cantemo/portal/portal/plugins"
+    done
+  SHELL
 end
