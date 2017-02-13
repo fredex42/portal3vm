@@ -21,29 +21,34 @@ function abspath() {
 BASEPATH=$(abspath "${BASH_SOURCE%/*}")
 
 echo ------------------------------
-echo Checking system...
+echo -e "\x1B[32mChecking system...\x1B[0m"
 echo ------------------------------
 GITEXE=`which git`
 if [ ${GITEXE} == "" ] || [ ! -x "${GITEXE}" ]; then
   echo You do not appear to have git installed. This is necessary to checkout source code.
   echo Please install git for your platform and then re-run.
   exit 1
+else
+  echo Found git at ${GITEXE}
 fi
+
 VAGRANTEXE=`which vagrant`
-if [ ${VAGRANTEXE} == "" ] || [ ! -x "${VAGRANTEXE}"]; then
+if [ ${VAGRANTEXE} == "" ] || [ ! -x "${VAGRANTEXE}" ]; then
   echo You do not appear to have Vagrant installed. This is necessary to set up the VM.
   echo Please visit https://vagrantup.com and install it for your platform.
   exit 1
+else
+  echo Found vagrant at ${VAGRANTEXE}
 fi
 
 echo ------------------------------
-echo Setting up environment in ${BASEPATH}...
+echo -e "\x1B[32mSetting up environment in ${BASEPATH}...\x1B[0m"
 echo ------------------------------
 
 mkdir -p ${BASEPATH}/work
 
 echo ------------------------------
-echo Checking out source code...
+echo -e "\x1B[32mChecking out source code...\x1B[0m"
 echo ------------------------------
 
 mkdir -p ${BASEPATH}/work/pluto
@@ -61,26 +66,26 @@ mkdir -p ${BASEPATH}/work/portal-plugins-public
 git clone https://github.com/fredex42/portal-plugins-private ${BASEPATH}/work/portal-plugins-private
 
 if [ "$?" != "0" ]; then
-  echo Unable to checkout guardian plugins.  Please contact multimediatech@theguardian.com to request access.
+  echo -e "\x1B[31mERROR\x1B[0m Unable to checkout guardian plugins.  Please contact multimediatech@theguardian.com to request access."
   echo "Setup will continue but you won't have all of the plugins installed."
 fi
 
 echo ------------------------------
-echo Setting up VM...
+echo -e "\x1B[32mSetting up VM...\x1B[0m"
 echo ------------------------------
 cd ${BASEPATH}
 vagrant up
 
 if [ "$?" != "0" ]; then
-  echo Vagrant returned exit code $?.
+  echo "\x1B[31mERROR\x1B[0m Vagrant returned exit code $?."
   echo Something went wrong setting up the VM.  Please consult the Vagrant errors above and fix.
   exit 3
 fi
 
 echo ------------------------------
-echo Setup completed
+echo -e "\x1B[32mSetup completed\x1B[0m"
 echo ------------------------------
 
-echo You should now be able to access Portal by going to http://localhost:8000/ and using default credentials.
+echo -e "You should now be able to access Portal by going to \x1B[1mhttp://localhost:8000/\x1B[0m and using default credentials."
 echo You can run 'vagrant up' to start the VM and 'vagrant halt' to suspend it.
 echo Run 'vagrant destroy' to completely delete it.
