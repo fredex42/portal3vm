@@ -59,6 +59,14 @@ if [ "$?" != "0" ]; then
   exit 2
 fi
 
+cd ${BASEPATH}/work/pluto
+git checkout portal3
+
+if [ "$?" != "0" ]; then
+  echo Unable to switch to Portal3 branch.  Don\'t expect things to work cleanly..
+  exit 2
+fi
+
 mkdir -p ${BASEPATH}/work/portal-plugins-public
 git clone https://github.com/guardian/portal-plugins-public ${BASEPATH}/work/portal-plugins-public
 

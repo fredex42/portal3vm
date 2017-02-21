@@ -41,6 +41,14 @@ Vagrant.configure("2") do |config|
 
     cd /media/sf_work/pluto
     /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
+    service portal-celery-indexer restart
+    service portal-celery-main restart
+    service portal-celery-notifyindexer restart
+    service portal-celery-re3 restart
+    service portal-celerybeat restart
+    service portal-cleanup restart
+    service portal-notifier restart
+    service portal-web restart
   SHELL
 
 end
