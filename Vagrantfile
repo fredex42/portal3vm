@@ -41,6 +41,7 @@ Vagrant.configure("2") do |config|
 
     cd /media/sf_work/pluto
     /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
+    setenforce Permissive
     service portal-celery-indexer restart
     service portal-celery-main restart
     service portal-celery-notifyindexer restart
