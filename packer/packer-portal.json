@@ -1,0 +1,82 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_url": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1611.iso",
+      "iso_checksum": "27bd866242ee058b7a5754e83d8ee8403e216b93d130d800852a96f41c34d86a",
+      "iso_checksum_type": "sha256",
+      "disk_size": 8000,
+      "http_directory": ".",
+      "boot_wait": "4s",
+      "boot_command": [
+        "<up><tab>",
+        "<bs><bs><bs><bs><bs>",
+        "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg ",
+        "<enter>"
+      ],
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "1000s",
+      "shutdown_command": "sudo /sbin/shutdown -h now",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "8192"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"]
+      ]
+    }
+  ],
+  "description": "Build CentOS 7 virtualbox image",
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "vagrant-insecure.pub",
+      "destination": "/home/vagrant/vagrant-insecure.pub"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo hostname centos-build",
+        "mkdir -p /home/vagrant/.ssh",
+        "chmod 700 /home/vagrant/.ssh",
+        "cat /home/vagrant/vagrant-insecure.pub >> /home/vagrant/.ssh/authorized_keys",
+        "chmod 600 /home/vagrant/.ssh/authorized_keys",
+        "rm -f /home/vagrant/vagrant-insecure.pub",
+        "sudo yum -y groups mark convert",
+        "sudo yum -y groupinstall 'Development Tools'",
+        "sudo yum -y install kernel-devel",
+        "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
+        "sudo KERN_DIR=/usr/src/kernels/`rpm --queryformat %{VERSION}-%{RELEASE}.%{ARCH} -q kernel-devel` /mnt/VBoxLinuxAdditions.run",
+        "sudo umount /mnt"
+        ]
+    },
+    {
+      "type": "file",
+      "source": "portal_install/RedHat7_Portal_3.0.1.tar",
+      "destination": "/tmp/RedHat7_Portal_3.0.1.tar"
+    },
+    {
+      "type": "file",
+      "source": "portal_install/license.key",
+      "destination": "/tmp/license.key"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mkdir /opt/install",
+        "sudo chown vagrant /opt/install",
+        "cd /opt/install",
+        "tar xvf /tmp/RedHat7_Portal_3.0.1.tar",
+        "rm -f /tmp/RedHat7_Portal_3.0.1.tar",
+        "cd RedHat7_Portal_3.0.1",
+        "sudo yum -y install curl memcached sudo lsof GConf2 ORBit2 OpenEXR-libs ghostscript ghostscript-fonts ilmbase libIDL libXfont libcroco libfontenc libgsf librsvg2 libwmf-lite sgml-common postgresql xorg-x11-font-utils zlib libxslt SDL libXxf86vm libtool-ltdl mesa-dri-drivers mesa-dri-filesystem mesa-libGL mesa-libGLU mesa-private-llvm tcl tk unixODBC java-1.8.0-openjdk postgresql java_cup libart_lgpl zip redhat-lsb log4j postgresql-jdbc apr apr-util boost boost-date-time boost-filesystem boost-graph boost-iostreams boost-program-options boost-python boost-regex boost-serialization boost-signals boost-system boost-test boost-thread boost-wave libicu java-1.8.0-openjdk python python-libs python-backports python-backports-ssl_match_hostname python-chardet python-six postgresql libvorbis graphviz libxslt unzip libtheora xerces-c",
+        "sudo ./setup --key-file /tmp/license.key --vidispine-password admin"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": 9
+    }
+  ]
+}

@@ -36,3 +36,9 @@ Hibernating
 ----
 
 Simply run vagrant halt from the commandline in the checkout directory to shut down the VM, and vagrant up to restart it.
+
+Rebuilding the base box
+----
+
+If you need to update the version of CentOS, Portal or you just have a different version of VirtualBox, you may need to rebuild the base box.  This can be done using
+the data under the ```packer``` subdirectory, consult the README there for more information.
