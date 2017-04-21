@@ -46,7 +46,9 @@
         "sudo yum -y install kernel-devel",
         "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
         "sudo KERN_DIR=/usr/src/kernels/`rpm --queryformat %{VERSION}-%{RELEASE}.%{ARCH} -q kernel-devel` /mnt/VBoxLinuxAdditions.run",
-        "sudo umount /mnt"
+        "sudo umount /mnt",
+        "mv /etc/sysconfig/selinux /etc/sysconfig/selinux.old",
+        "cat /etc/sysconfig/selinux.old | sed s/enforcing/disabled/ > /etc/sysconfig/selinux"
         ]
     },
     {
