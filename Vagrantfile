@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "https://s3-eu-west-1.amazonaws.com/gnm-multimedia-archivedtech/portal/Portal31.box"
+  config.vm.box = "https://s3-eu-west-1.amazonaws.com/gnm-multimedia-archivedtech/portal/Portal311.box"
   config.vm.network "forwarded_port", guest: 8000, host: 8000
   config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "forwarded_port", guest: 5555, host: 5555
@@ -28,6 +28,11 @@ Vagrant.configure("2") do |config|
 yum clean expire-cache
 #uncomment this line if you need to debug selinux problems
 #yum -y install policycoreutils-python
+
+#ensure that rabbitmq is set up properly
+rabbitmqctl add_user portal p0rtal
+rabbitmqctl add_vhost portal
+rabbitmqctl set_permissions -p portal portal ".*" ".*" ".*"
 
 sudo mv /tmp/modify_config.pl /usr/local/bin/modify_config.pl
 sudo chmod a+x /usr/local/bin/modify_config.pl
@@ -55,15 +60,8 @@ done
 cd /media/sf_work/pluto
 /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
     echo COMPRESS_ENABLED=False >> /opt/cantemo/portal/portal/settings.py
-    
-    service portal-celery-indexer restart
-    service portal-celery-main restart
-    service portal-celery-notifyindexer restart
-    service portal-celery-re3 restart
-    service portal-celerybeat restart
-    service portal-cleanup restart
-    service portal-notifier restart
-    service portal-web restart
+
+    systemctl restart portal.target
   SHELL
 
 end
