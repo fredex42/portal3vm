@@ -38,7 +38,10 @@ sudo mv /tmp/modify_config.pl /usr/local/bin/modify_config.pl
 sudo chmod a+x /usr/local/bin/modify_config.pl
 mv /etc/nginx/conf.d/portal.conf /etc/nginx/conf.d/portal.conf.old
 
-perl /usr/local/bin/modify_config.pl --filename /etc/nginx/conf.d/portal.conf.old --position 6 --text 'listen 8000;' --output /etc/nginx/conf.d/portal.conf
+perl /usr/local/bin/modify_config.pl --filename /etc/nginx/conf.d/portal.conf.old --position 6 --text 'listen 8000;' --output /etc/nginx/conf.d/portal.conf.2
+cat /etc/nginx/conf.d/portal.conf.2 | sed 's.X-Forwarded-Host $host;.X-Forwarded-Host $host:8000;.' > /etc/nginx/conf.d/portal.conf
+rm -f /etc/nginx/conf.d/portal.conf.2
+
 setenforce permissive #otherwise selinux won't let nginx bind to port 8000
 systemctl restart nginx
 
