@@ -35,7 +35,8 @@
     {
       "type": "shell",
       "inline": [
-        "sudo hostname centos-build",
+        "sudo hostname portal3-dev",
+        "sudo bash -c 'echo 127.0.0.1 `hostname` >> /etc/hosts'",
         "mkdir -p /home/vagrant/.ssh",
         "chmod 700 /home/vagrant/.ssh",
         "cat /home/vagrant/vagrant-insecure.pub >> /home/vagrant/.ssh/authorized_keys",
@@ -43,12 +44,10 @@
         "rm -f /home/vagrant/vagrant-insecure.pub",
         "sudo yum -y groups mark convert",
         "sudo yum -y groupinstall 'Development Tools'",
-        "sudo yum -y install kernel-devel",
+        "sudo yum -y install kernel-devel policycoreutils-python",
         "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
         "sudo KERN_DIR=/usr/src/kernels/`rpm --queryformat %{VERSION}-%{RELEASE}.%{ARCH} -q kernel-devel` /mnt/VBoxLinuxAdditions.run",
         "sudo umount /mnt",
-        "sudo mv /etc/sysconfig/selinux /etc/sysconfig/selinux.old",
-        "sudo cat /etc/sysconfig/selinux.old | sed s/enforcing/disabled/ > /etc/sysconfig/selinux",
         "sudo systemctl stop firewalld",
         "sudo systemctl disable firewalld"
         ]

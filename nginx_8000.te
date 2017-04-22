@@ -1,0 +1,21 @@
+
+module nginx_8000 1.0;
+
+require {
+	type oddjob_mkhomedir_t;
+	type httpd_t;
+	type vmblock_t;
+	type usr_t;
+	type soundd_port_t;
+	class tcp_socket name_bind;
+	class file { append getattr open read };
+}
+
+#============= httpd_t ==============
+allow httpd_t soundd_port_t:tcp_socket name_bind;
+allow httpd_t vmblock_t:file { getattr open read };
+
+#============= oddjob_mkhomedir_t ==============
+
+#!!!! WARNING: 'usr_t' is a base type.
+allow oddjob_mkhomedir_t usr_t:file append;

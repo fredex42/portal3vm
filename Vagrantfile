@@ -23,12 +23,12 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "file", source: "modify_config.pl", destination: "/tmp/modify_config.pl"
-
+  config.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
   config.vm.provision "shell", inline: <<-SHELL
 yum clean expire-cache
-#uncomment this line if you need to debug selinux problems
-#yum -y install policycoreutils-python
+yum -y install policycoreutils-python
 
+semodule -i /tmp/nginx_8000.pp
 #ensure that rabbitmq is set up properly
 rabbitmqctl add_user portal p0rtal
 rabbitmqctl add_vhost portal
@@ -42,8 +42,7 @@ perl /usr/local/bin/modify_config.pl --filename /etc/nginx/conf.d/portal.conf.ol
 cat /etc/nginx/conf.d/portal.conf.2 | sed 's.X-Forwarded-Host $host;.X-Forwarded-Host $host:8000;.' > /etc/nginx/conf.d/portal.conf
 rm -f /etc/nginx/conf.d/portal.conf.2
 
-setenforce permissive #otherwise selinux won't let nginx bind to port 8000
-systemctl restart nginx
+sudo systemctl restart nginx
 
 /opt/cantemo/python/bin/pip install django_debug_toolbar==1.3
 for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
