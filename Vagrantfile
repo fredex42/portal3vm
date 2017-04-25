@@ -1,13 +1,25 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+## https://github.com/WhoopInc/vagrant-s3auth
+unless Vagrant.has_plugin?('vagrant-s3auth')
+  # Attempt to install ourself. Bail out on failure so we don't get stuck in an
+  # infinite loop.
+  system('vagrant plugin install vagrant-s3auth') || exit!
+
+  # Relaunch Vagrant so the plugin is detected. Exit with the same status code.
+  exit system('vagrant', *ARGV)
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "https://s3-eu-west-1.amazonaws.com/gnm-multimedia-archivedtech/portal/Portal311.box"
+  config.vm.box = "https://s3-eu-west-1.amazonaws.com/gnm-multimedia-archivedtech/portal/Portal_311v2.box"
+
   config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 8008, host: 8008
   config.vm.network "forwarded_port", guest: 8080, host: 8080
   config.vm.network "forwarded_port", guest: 5555, host: 5555
 
@@ -17,6 +29,7 @@ Vagrant.configure("2") do |config|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
 
+    vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
     # Customize the amount of memory on the VM:
     vb.memory = "8192"
     vb.cpus = 4

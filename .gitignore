@@ -3,4 +3,4 @@ work/
 .vagrant/
 packer_cache/
 portal_install
-
+install.log
