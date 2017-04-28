@@ -24,7 +24,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 5555, host: 5555
 
   config.vm.synced_folder "work", "/media/sf_work"
-
+  config.vm.synced_folder "utils", "/media/sf_utils"
+  
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
