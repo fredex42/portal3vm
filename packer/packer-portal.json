@@ -11,7 +11,7 @@
       "boot_wait": "4s",
       "boot_command": [
         "<up><tab>",
-        "<bs><bs><bs><bs><bs>",
+        " ",
         "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg ",
         "<enter>"
       ],
@@ -47,15 +47,13 @@
         "sudo yum -y install kernel-devel policycoreutils-python",
         "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
         "sudo KERN_DIR=/usr/src/kernels/`rpm --queryformat %{VERSION}-%{RELEASE}.%{ARCH} -q kernel-devel` /mnt/VBoxLinuxAdditions.run",
-        "sudo umount /mnt",
-        "sudo systemctl stop firewalld",
-        "sudo systemctl disable firewalld"
+        "sudo umount /mnt"
         ]
     },
     {
       "type": "file",
-      "source": "portal_install/RedHat7_Portal_3.1.1.tar",
-      "destination": "/tmp/RedHat7_Portal_3.1.1.tar"
+      "source": "portal_install/RedHat7_Portal_3.1.2.tar",
+      "destination": "/tmp/RedHat7_Portal_3.1.2.tar"
     },
     {
       "type": "file",
@@ -68,11 +66,13 @@
         "sudo mkdir /opt/install",
         "sudo chown vagrant /opt/install",
         "cd /opt/install",
-        "tar xvf /tmp/RedHat7_Portal_3.1.1.tar",
-        "rm -f /tmp/RedHat7_Portal_3.1.1.tar",
-        "cd RedHat7_Portal_3.1.1",
+        "tar xvf /tmp/RedHat7_Portal_3.1.2.tar",
+        "rm -f /tmp/RedHat7_Portal_3.1.2.tar",
+        "cd RedHat7_Portal_3.1.2",
         "sudo yum -y install curl memcached sudo lsof GConf2 ORBit2 OpenEXR-libs ghostscript ghostscript-fonts ilmbase libIDL libXfont libcroco libfontenc libgsf librsvg2 libwmf-lite sgml-common postgresql xorg-x11-font-utils zlib libxslt SDL libXxf86vm libtool-ltdl mesa-dri-drivers mesa-dri-filesystem mesa-libGL mesa-libGLU mesa-private-llvm tcl tk unixODBC java-1.8.0-openjdk postgresql java_cup libart_lgpl zip redhat-lsb log4j postgresql-jdbc apr apr-util boost boost-date-time boost-filesystem boost-graph boost-iostreams boost-program-options boost-python boost-regex boost-serialization boost-signals boost-system boost-test boost-thread boost-wave libicu java-1.8.0-openjdk python python-libs python-backports python-backports-ssl_match_hostname python-chardet python-six postgresql libvorbis graphviz libxslt unzip libtheora xerces-c",
-        "sudo ./setup --key-file /tmp/license.key --vidispine-password admin"
+        "sudo ./setup --key-file /tmp/license.key --vidispine-password admin",
+        "sudo systemctl stop firewalld",
+        "sudo systemctl disable firewalld"
       ]
     }
   ],

@@ -73,6 +73,9 @@ git clone https://github.com/guardian/portal-plugins-public ${BASEPATH}/work/por
 mkdir -p ${BASEPATH}/work/portal-plugins-public
 git clone https://github.com/fredex42/portal-plugins-private ${BASEPATH}/work/portal-plugins-private
 
+mkdir -p ${BASEPATH}/work/gnmvidispine
+git clone https://github.com/fredex42/gnmvidispine ${BASEPATH}/work/gnmvidispine
+
 if [ "$?" != "0" ]; then
   echo -e "\x1B[31mERROR\x1B[0m Unable to checkout guardian plugins.  Please contact multimediatech@theguardian.com to request access."
   echo "Setup will continue but you won't have all of the plugins installed."

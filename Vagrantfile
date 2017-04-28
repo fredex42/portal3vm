@@ -59,18 +59,21 @@ sudo systemctl restart nginx
 
 /opt/cantemo/python/bin/pip install django_debug_toolbar==1.3
 for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
-if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
-rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
-fi
-ln -s "$d" "/opt/cantemo/portal/portal/plugins"
+  if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
+    rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
+  fi
+  ln -s "$d" "/opt/cantemo/portal/portal/plugins"
 done
 
 for d in `find /media/sf_work/portal-plugins-public/ -type d -iname gnm*`; do
-if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
-rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
-fi
-ln -s "$d" "/opt/cantemo/portal/portal/plugins"
+  if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
+    rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
+  fi
+  ln -s "$d" "/opt/cantemo/portal/portal/plugins"
 done
+
+cd /media/sf_work/gnmvidispine
+/opt/cantemo/python/bin/python setup.py install
 
 cd /media/sf_work/pluto
 /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
