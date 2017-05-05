@@ -6,8 +6,10 @@ if [ ! -d /media/sf_utils ]; then
 fi
 
 echo Backing up portal...
-su postgres -c 'pg_dump --data-only portal | gzip > /media/sf_utils/portal.sql.gz'
+su postgres -c 'pg_dump portal | gzip > /tmp/portal.sql.gz'
+mv /tmp/portal.sql.gz /media/sf_utils
 echo Done.
 echo Backing up vidispine...
-su postgres -c 'pg_dump --data-only vidispine | gzip > /media/sf_utils/vidispine.sql.gz'
+su postgres -c 'pg_dump vidispine | gzip > /tmp/vidispine.sql.gz'
+mv /tmp/vidispine.sql.gz /media/sf_utils
 echo Done.
