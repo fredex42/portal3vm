@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
   config.vm.provision "shell", inline: <<-SHELL
 yum clean expire-cache
-yum -y install policycoreutils-python
+yum -y install policycoreutils-python vim
 
 semodule -i /tmp/nginx_8000.pp
 #ensure that rabbitmq is set up properly
