@@ -55,23 +55,23 @@ These instructions assume that you have put your Portal database backup into
 `{portal3vm}/utils/vidispine.sql.gz`.
 The following commands should be run in the VM:
 
-``
-\# systemctl stop portal.target
-\# systemctl stop vidispine
-\# su postgres -c 'psql'
+```
+# systemctl stop portal.target
+# systemctl stop vidispine
+# su postgres -c 'psql'
 postgres=# drop database portal;
 postgres=# drop database vidispine;
 postgres=# \q
-\# su postgres -c 'createdb vidispine'
-\# su postgres -c 'createdb portal'
-\# su postgres -c 'zcat /media/sf_utils/vidispine.sql.gz | psql vidispine'
-\# su postgres -c 'zcat /media/sf_utils/portal.sql.gz | psql portal'
-\# systemctl start vidispine
+# su postgres -c 'createdb vidispine'
+# su postgres -c 'createdb portal'
+# su postgres -c 'zcat /media/sf_utils/vidispine.sql.gz | psql vidispine'
+# su postgres -c 'zcat /media/sf_utils/portal.sql.gz | psql portal'
+# systemctl start vidispine
 [wait for vidispine to load up fully.....]
-\# /opt/cantemo/portal/manage.py sync_commissions
-\# /opt/cantemo/portal/manage.py sync_masters
-\# systemctl start portal.target
-``
+# /opt/cantemo/portal/manage.py sync_commissions
+# /opt/cantemo/portal/manage.py sync_masters
+# systemctl start portal.target
+```
 
 Once you have run this, you will need to trigger re-indexes using the Admin interface
 in this order:
