@@ -81,6 +81,7 @@ cd /media/sf_work/pluto
     echo COMPRESS_ENABLED=False >> /opt/cantemo/portal/portal/settings.py
 
     systemctl restart portal.target
+sudo usermod -a -G vboxsf www-data
   SHELL
 
 end
