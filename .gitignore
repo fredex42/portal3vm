@@ -4,3 +4,5 @@ work/
 packer_cache/
 portal_install
 install.log
+utils/portal.sql.gz
+utils/vidispine.sql.gz
