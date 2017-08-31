@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
-
+    #maybe need to do this later, otherwise the ethernet interface does not come up. if you can't log in, comment this out then restart vm
     vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
     # Customize the amount of memory on the VM:
     vb.memory = "8192"
@@ -59,14 +59,14 @@ rm -f /etc/nginx/conf.d/portal.conf.2
 sudo systemctl restart nginx
 
 /opt/cantemo/python/bin/pip install django_debug_toolbar==1.3
-for d in `find /media/sf_work/portal-plugins-private/ -type d -iname gnm*`; do
+for d in `find /media/sf_work/portal-plugins-private/ -maxdepth 1 -type d -iname gnm*`; do
   if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
     rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
   fi
   ln -s "$d" "/opt/cantemo/portal/portal/plugins"
 done
 
-for d in `find /media/sf_work/portal-plugins-public/ -type d -iname gnm*`; do
+for d in `find /media/sf_work/portal-plugins-public/ -maxdepth 1 -type d -iname gnm*`; do
   if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
     rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
   fi
