@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
   config.vm.provision "shell", inline: <<-SHELL
 yum clean expire-cache
-yum -y install policycoreutils-python vim swig openssl-devel
+yum -y install policycoreutils-python vim swig openssl-devel libxml2-dev libxslt-dev
 
 semodule -i /tmp/nginx_8000.pp
 #ensure that rabbitmq is set up properly
@@ -78,7 +78,7 @@ cd /media/sf_work/gnmvidispine
 
 cd /media/sf_work/pluto
 env SWIG_FEATURES="-cpperraswarn -includeall -I/usr/include/openssl" pip install --upgrade M2Crypto
-/opt/cantemo/python/bin/pip install -r requirements.txt
+chmod a+x /media/sf_work/pluto/bin/inve.sh
 /media/sf_work/pluto/bin/inve.sh /media/sf_work/pluto/bin/engage_TENTACLE.sh
     echo COMPRESS_ENABLED=False >> /opt/cantemo/portal/portal/settings.py
 
