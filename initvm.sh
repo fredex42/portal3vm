@@ -24,7 +24,7 @@ echo ------------------------------
 echo -e "\x1B[32mChecking system...\x1B[0m"
 echo ------------------------------
 GITEXE=`which git`
-if [ ${GITEXE} == "" ] || [ ! -x "${GITEXE}" ]; then
+if [ "${GITEXE}" == "" ] || [ ! -x "${GITEXE}" ]; then
   echo You do not appear to have git installed. This is necessary to checkout source code.
   echo Please install git for your platform and then re-run.
   exit 1
@@ -33,12 +33,22 @@ else
 fi
 
 VAGRANTEXE=`which vagrant`
-if [ ${VAGRANTEXE} == "" ] || [ ! -x "${VAGRANTEXE}" ]; then
+if [ "${VAGRANTEXE}" == "" ] || [ ! -x "${VAGRANTEXE}" ]; then
   echo You do not appear to have Vagrant installed. This is necessary to set up the VM.
   echo Please visit https://vagrantup.com and install it for your platform.
   exit 1
 else
   echo Found vagrant at ${VAGRANTEXE}
+fi
+
+if [ "${AWS_PROFILE}" == "" ]; then
+  echo The AWS_PROFILE environment variable is not set.  While this may not be an issue,
+  echo you need to have AWS credentials in order to download the base VM image later on.
+  echo I recommend you type CTRL-C here to stop the script and make sure that you have
+  echo the right AWS credentials as described in the README document before retrying
+  echo
+  echo Press CTRL-C to stop or any other key to continue...
+  read -n 1 -s
 fi
 
 echo ------------------------------
@@ -95,5 +105,5 @@ echo -e "\x1B[32mSetup completed\x1B[0m"
 echo ------------------------------
 
 echo -e "You should now be able to access Portal by going to \x1B[1mhttp://localhost:8000/\x1B[0m and using default credentials."
-echo You can run 'vagrant up' to start the VM and 'vagrant halt' to suspend it.
-echo Run 'vagrant destroy' to completely delete it.
+echo You can run \'vagrant up\' to start the VM and \'vagrant halt\' to suspend it.
+echo Run \'vagrant destroy\' to completely delete it.

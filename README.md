@@ -10,11 +10,16 @@ Requirements
 - Virtualbox 5.x - https://www.virtualbox.org/wiki/Downloads
 - git
 - access to the Pluto and portal-plugins-* repositories
+- access to GNM Multimedia S3
 
 How to use
 ----
 
 - check out this repo into a new directory
+- ensure that you have GNM Multimedia AWS credentials in your environment.
+Normally, this is done by logging into Janus, going to the Multimedia account
+and selecting 'Credentials' then 'Copy'.  Paste the resulting text into a terminal, then set the `AWS_PROFILE` environment variable to `multimedia` before running initvm.sh
+- If you do not have access to Janus, contact `Multimediatech@theguardian.com` to request access
 - run ./initvm.sh
 
 This will:
@@ -94,6 +99,18 @@ Hibernating
 ----
 
 Simply run vagrant halt from the commandline in the checkout directory to shut down the VM, and vagrant up to restart it.
+
+Updating the base box
+----
+
+From time to time, the base box is updated to take account of changes to the underlying CentOS installation, Portal and Vidispine.
+In order to upgrade to a new base box, simply:
+
+- back up your database as described in `Backing up your database`, above
+- exit the old VM and run `vagrant destroy` to delete it
+- run `git pull` to download the latest version of portal3vm
+- run `vagrant up` to build a new VM from the latest base box
+- restore your old database as described in `Overwriting your database from backup`, above
 
 Rebuilding the base box
 ----
