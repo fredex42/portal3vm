@@ -20,12 +20,14 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "forwarded_port", guest: 8000, host: 8000
   config.vm.network "forwarded_port", guest: 8008, host: 8008
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8089
   config.vm.network "forwarded_port", guest: 5555, host: 5555
 
   config.vm.synced_folder "work", "/media/sf_work"
   config.vm.synced_folder "utils", "/media/sf_utils"
-
+  config.vm.synced_folder "media/Assets", "/media/sf_Assets"
+  config.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
+  
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false

@@ -79,6 +79,9 @@ echo ------------------------------
 echo -e "\x1B[32mSetting up VM...\x1B[0m"
 echo ------------------------------
 cd ${BASEPATH}
+mkdir -p media/Assets
+mkdir -p "media/Master Outputs"
+
 vagrant up
 
 if [ "$?" != "0" ]; then
