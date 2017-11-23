@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "utils", "/media/sf_utils"
   config.vm.synced_folder "media/Assets", "/media/sf_Assets"
   config.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
-  
+
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
@@ -59,6 +59,9 @@ cat /etc/nginx/conf.d/portal.conf.2 | sed 's.X-Forwarded-Host $host;.X-Forwarded
 rm -f /etc/nginx/conf.d/portal.conf.2
 
 sudo systemctl restart nginx
+
+#this must exist, or you get 500 errors in some project management stuff
+mkdir -p "/srv/projectfiles/ProjectTemplatesDevEnvironment/"
 
 /opt/cantemo/python/bin/pip install django_debug_toolbar==1.3
 for d in `find /media/sf_work/portal-plugins-private/ -maxdepth 1 -type d -iname gnm*`; do
