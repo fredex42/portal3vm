@@ -23,6 +23,11 @@
         ["modifyvm", "{{.Name}}", "--memory", "8192"],
         ["modifyvm", "{{.Name}}", "--cpus", "2"]
       ]
+    },
+    {
+      "type": "docker",
+      "image": "centos:latest",
+      "export_path": "portal-centos7-docker.tar"
     }
   ],
   "description": "Build CentOS 7 virtualbox image",

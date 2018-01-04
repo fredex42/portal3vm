@@ -27,12 +27,14 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "utils", "/media/sf_utils"
   config.vm.synced_folder "media/Assets", "/media/sf_Assets"
   config.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
+  config.vm.synced_folder "../gnmsaltstack", "/srv/"
 
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = false
     #maybe need to do this later, otherwise the ethernet interface does not come up. if you can't log in, comment this out then restart vm
-    vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
+    #vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
+    vb.customize ["modifyvm",:id,"--macaddress1","005056bc09b0"]
     # Customize the amount of memory on the VM:
     vb.memory = "8192"
     vb.cpus = 4
