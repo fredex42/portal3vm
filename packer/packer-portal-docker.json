@@ -11,6 +11,14 @@
     {
       "type": "shell",
       "inline": [
+        "yum -y install sudo postgresql postgresql-server",
+        "sudo -u postgres /usr/bin/initdb -D /var/lib/pgsql/data",
+        "sudo -u postgres /usr/bin/pg_ctl -D /var/lib/pgsql/data -l logfile start"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
         "yum -y groupinstall 'Development Tools'"
         ]
     },
@@ -32,8 +40,8 @@
         "tar xvf /tmp/RedHat7_Portal_3.1.2.tar",
         "rm -f /tmp/RedHat7_Portal_3.1.2.tar",
         "cd RedHat7_Portal_3.1.2",
-        "yum -y install curl memcached sudo lsof GConf2 ORBit2 OpenEXR-libs ghostscript ghostscript-fonts ilmbase libIDL libXfont libcroco libfontenc libgsf librsvg2 libwmf-lite sgml-common postgresql xorg-x11-font-utils zlib libxslt SDL libXxf86vm libtool-ltdl mesa-dri-drivers mesa-dri-filesystem mesa-libGL mesa-libGLU mesa-private-llvm tcl tk unixODBC java-1.8.0-openjdk postgresql java_cup libart_lgpl zip redhat-lsb log4j postgresql-jdbc apr apr-util boost boost-date-time boost-filesystem boost-graph boost-iostreams boost-program-options boost-python boost-regex boost-serialization boost-signals boost-system boost-test boost-thread boost-wave libicu java-1.8.0-openjdk python python-libs python-backports python-backports-ssl_match_hostname python-chardet python-six postgresql libvorbis graphviz libxslt unzip libtheora xerces-c",
-        "./setup --key-file /tmp/license.key --vidispine-password admin"
+        "yum -y install curl memcached sudo lsof GConf2 ORBit2 OpenEXR-libs ghostscript ghostscript-fonts ilmbase libIDL libXfont libcroco libfontenc libgsf librsvg2 libwmf-lite sgml-common xorg-x11-font-utils zlib libxslt SDL libXxf86vm libtool-ltdl mesa-dri-drivers mesa-dri-filesystem mesa-libGL mesa-libGLU mesa-private-llvm tcl tk unixODBC java-1.8.0-openjdk postgresql java_cup libart_lgpl zip redhat-lsb log4j postgresql-jdbc apr apr-util boost boost-date-time boost-filesystem boost-graph boost-iostreams boost-program-options boost-python boost-regex boost-serialization boost-signals boost-system boost-test boost-thread boost-wave libicu java-1.8.0-openjdk python python-libs python-backports python-backports-ssl_match_hostname python-chardet python-six postgresql libvorbis graphviz libxslt unzip libtheora xerces-c",
+        "./setup --key-file /tmp/license.key --vidispine-password admin --no-postgresql --no-transcoder --no-vidispine --no-rabbitmq --no-tomcat --no-elasticsearch"
       ]
     }
   ]
