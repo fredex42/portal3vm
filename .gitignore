@@ -6,3 +6,6 @@ portal_install
 install.log
 utils/portal.sql.gz
 utils/vidispine.sql.gz
+*.mp4
+*.mov
+*.mxf
