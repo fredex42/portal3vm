@@ -16,7 +16,7 @@ end
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_312v2.box"
+  config.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_340.box"
 
   config.vm.network "forwarded_port", guest: 8000, host: 8000
   config.vm.network "forwarded_port", guest: 8008, host: 8008
