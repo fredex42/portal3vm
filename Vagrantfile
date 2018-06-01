@@ -16,31 +16,32 @@ end
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_340.box"
+  config.vm.define "pluto" do |pluto|
+    pluto.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_340.box"
+    pluto.vm.network "private_network", ip: "169.254.1.20"
+    pluto.vm.network "forwarded_port", guest: 8000, host: 8000
+    pluto.vm.network "forwarded_port", guest: 8008, host: 8008
+    pluto.vm.network "forwarded_port", guest: 8080, host: 8089
+    pluto.vm.network "forwarded_port", guest: 5555, host: 5555
 
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
-  config.vm.network "forwarded_port", guest: 8008, host: 8008
-  config.vm.network "forwarded_port", guest: 8080, host: 8089
-  config.vm.network "forwarded_port", guest: 5555, host: 5555
+    pluto.vm.synced_folder "work", "/media/sf_work"
+    pluto.vm.synced_folder "utils", "/media/sf_utils"
+    pluto.vm.synced_folder "media/Assets", "/media/sf_Assets"
+    pluto.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
 
-  config.vm.synced_folder "work", "/media/sf_work"
-  config.vm.synced_folder "utils", "/media/sf_utils"
-  config.vm.synced_folder "media/Assets", "/media/sf_Assets"
-  config.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
+    pluto.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+      #maybe need to do this later, otherwise the ethernet interface does not come up. if you can't log in, comment this out then restart vm
+      vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
+      # Customize the amount of memory on the VM:
+      vb.memory = "8192"
+      vb.cpus = 4
+    end
 
-  config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    vb.gui = false
-    #maybe need to do this later, otherwise the ethernet interface does not come up. if you can't log in, comment this out then restart vm
-    vb.customize ["modifyvm",:id,"--macaddress1","080027b66c3a"]
-    # Customize the amount of memory on the VM:
-    vb.memory = "8192"
-    vb.cpus = 4
-  end
-
-  config.vm.provision "file", source: "modify_config.pl", destination: "/tmp/modify_config.pl"
-  config.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
-  config.vm.provision "shell", inline: <<-SHELL
+    pluto.vm.provision "file", source: "modify_config.pl", destination: "/tmp/modify_config.pl"
+    pluto.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
+    pluto.vm.provision "shell", inline: <<-SHELL
 yum clean expire-cache
 yum -y install policycoreutils-python vim swig openssl-devel libxml2-dev libxslt-dev
 
@@ -89,6 +90,44 @@ chmod a+x /media/sf_work/pluto/bin/inve.sh
 
     systemctl restart portal.target
 sudo usermod -a -G vboxsf www-data
-  SHELL
+sudo bash -c "echo 169.254.1.21 projectlocker >> /etc/hosts"
+SHELL
+    end #config.vm.define "pluto"
 
+  config.vm.define "projectlocker" do |projectlocker|
+    projectlocker.vm.box = "projectlocker-base"
+
+    projectlocker.vm.provider "virtualbox" do |vb|
+      # Display the VirtualBox GUI when booting the machine
+      vb.gui = false
+      # Customize the amount of memory on the VM:
+      vb.memory = "1024"
+      vb.cpus = 1
+    end
+
+    projectlocker.vm.boot_timeout = 300
+    projectlocker.vm.network "private_network", ip: "169.254.1.21"
+    projectlocker.vm.network "forwarded_port", guest: 9000, host: 8001
+    projectlocker.vm.provision "shell", inline: <<-SHELL
+sudo bash -c "echo 169.254.1.20 pluto >> /etc/hosts"
+sudo bash -c "echo 169.254.1.21 projectlocker >> /etc/hosts"
+
+sudo rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.2/redhat/rhel-7-x86_64/pgdg-centos92-9.2-3.noarch.rpm
+sudo yum -y install postgresql92-server
+
+sudo -u postgres /usr/pgsql-9.2/bin/initdb -D /var/lib/pgsql/9.2/data
+sudo systemctl enable postgresql-9.2
+sudo systemctl start postgresql-9.2
+sudo -u postgres /usr/pgsql-9.2/bin/createuser projectlocker
+sudo -u postgres /usr/pgsql-9.2/bin/createdb projectlocker -O projectlocker
+
+sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/679/projectlocker-1.0-679.noarch.rpm
+sudo cp /vagrant/projectlocker/defaults /etc/default/projectlocker
+sudo cp /vagrant/projectlocker/application.conf /usr/share/projectlocker/conf/application.conf
+sudo cp /vagrant/projectlocker/projectlocker.service /usr/lib/systemd/system/projectlocker.service
+sudo systemctl daemon-reload
+sudo systemctl enable projectlocker
+sudo systemctl start projectlocker
+SHELL
+  end
 end

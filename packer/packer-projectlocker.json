@@ -1,0 +1,61 @@
+{
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "guest_os_type": "RedHat_64",
+      "iso_url": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso",
+      "iso_checksum": "714acc0aefb32b7d51b515e25546835e55a90da9fb00417fbee2d03a62801efd",
+      "iso_checksum_type": "sha256",
+      "disk_size": 8000,
+      "http_directory": ".",
+      "boot_wait": "4s",
+      "boot_command": [
+        "<up><tab>",
+        " ",
+        "inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/anaconda-ks.cfg ",
+        "<enter>"
+      ],
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_wait_timeout": "1000s",
+      "shutdown_command": "sudo /sbin/shutdown -h now",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "8192"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"]
+      ]
+    }
+  ],
+  "description": "Build CentOS 7 virtualbox image",
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "vagrant-insecure.pub",
+      "destination": "/home/vagrant/vagrant-insecure.pub"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo hostname projectlocker-dev",
+        "sudo bash -c 'echo 127.0.0.1 `hostname` >> /etc/hosts'",
+        "mkdir -p /home/vagrant/.ssh",
+        "chmod 700 /home/vagrant/.ssh",
+        "cat /home/vagrant/vagrant-insecure.pub >> /home/vagrant/.ssh/authorized_keys",
+        "chmod 600 /home/vagrant/.ssh/authorized_keys",
+        "rm -f /home/vagrant/vagrant-insecure.pub",
+        "sudo yum -y groups mark convert",
+        "sudo yum -y groupinstall 'Development Tools'",
+        "sudo yum -y install kernel-devel kernel-devel-`uname -r` policycoreutils-python java-1.8.0-openjdk-headless java-1.8.0-openjdk-devel",
+        "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
+        "sudo KERN_DIR=/usr/src/kernels/`uname -r` /mnt/VBoxLinuxAdditions.run",
+        "sudo umount /mnt",
+        "sudo bash -c 'echo UseDNS no >> /etc/ssh/sshd_config'"
+        ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": 9
+    }
+  ]
+}
