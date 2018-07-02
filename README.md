@@ -9,7 +9,7 @@ This repo contains a convenience script to get up and running on Pluto developme
 - Virtualbox 5.x - https://www.virtualbox.org/wiki/Downloads
 - git
 - access to the Pluto and portal-plugins-* repositories
-- access to GNM Multimedia S3
+- access to GNM Multimedia S3.  If you don't have this contact mailto:multimediatech@theguardian.com to get access; make sure you mention that this is for the Pluto development environment
 
 ## How to use
 
@@ -111,6 +111,8 @@ Projectlocker only authenticates via LDAP/AD, and since there was no point build
 - You should see another option called `Project template to use for Pluto 'Premiere':`.  If not, there may be a communication problem between
 Portal and Projectlocker.  Try restarting Projectlocker while checking the logfile `/var/log/projectlocker/projectlocker.log`.  Or you may have just followed the instructions so quickly that it has not yet synced up the project types (you need to have restarted Portal as in `Set up Pluto global metadata` before it can "see" the updated values)
 - There should be a template called `Premiere test template 1`.  Select this for the the  `Project template to use for Pluto 'Premiere':`; you don't need to confirm or click Save, the value should be saved immediately.
+- Go to `Project Types` and edit the pre-existing `Premiere` entry.  Update the `Pluto type` dropdown to be the `Premiere` entry that you created in Pluto. This is necessary for  Projectlocker-created projects to show up in Pluto.
+
 
 ### Set up PlutoHelperAgent
 
