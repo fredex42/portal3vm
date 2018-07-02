@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
     pluto.vm.synced_folder "utils", "/media/sf_utils"
     pluto.vm.synced_folder "media/Assets", "/media/sf_Assets"
     pluto.vm.synced_folder "media/Master Outputs", "/media/sf_MasterOutputs"
+    pluto.vm.synced_folder "media/Scratch", "/media/sf_Scratch"
 
     pluto.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
@@ -72,7 +73,7 @@ for d in `find /media/sf_work/portal-plugins-private/ -maxdepth 1 -type d -iname
   ln -s "$d" "/opt/cantemo/portal/portal/plugins"
 done
 
-for d in `find /media/sf_work/portal-plugins-public/ -maxdepth 1 -type d -iname gnm*`; do
+for d in `find /media/sf_work/portal-plugins-public/portal/plugins -maxdepth 1 -type d -iname gnm*`; do
   if [ -h "/opt/cantemo/portal/portal/plugins/`basename ${d}`" ]; then
     rm "/opt/cantemo/portal/portal/plugins/`basename ${d}`"
   fi
@@ -106,28 +107,43 @@ SHELL
     end
 
     projectlocker.vm.boot_timeout = 300
+    projectlocker.vm.synced_folder "media/ProjectFiles", "/media/sf_ProjectFiles"
+    projectlocker.vm.synced_folder "media/ProjectTemplates", "/media/sf_ProjectTemplates"
+    projectlocker.vm.synced_folder "media/Assets", "/media/sf_Assets"
     projectlocker.vm.network "private_network", ip: "169.254.1.21"
     projectlocker.vm.network "forwarded_port", guest: 9000, host: 8001
     projectlocker.vm.provision "shell", inline: <<-SHELL
 sudo bash -c "echo 169.254.1.20 pluto >> /etc/hosts"
 sudo bash -c "echo 169.254.1.21 projectlocker >> /etc/hosts"
 
-sudo rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.2/redhat/rhel-7-x86_64/pgdg-centos92-9.2-3.noarch.rpm
-sudo yum -y install postgresql92-server
-
-sudo -u postgres /usr/pgsql-9.2/bin/initdb -D /var/lib/pgsql/9.2/data
-sudo systemctl enable postgresql-9.2
-sudo systemctl start postgresql-9.2
 sudo -u postgres /usr/pgsql-9.2/bin/createuser projectlocker
 sudo -u postgres /usr/pgsql-9.2/bin/createdb projectlocker -O projectlocker
+
+sudo useradd projectlocker
+sudo mkdir -p /run/projectlocker
+sudo chown projectlocker /run/projectlocker
+
+#firewall rules are set up with firewalld in the packer build
 
 sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/679/projectlocker-1.0-679.noarch.rpm
 sudo cp /vagrant/projectlocker/defaults /etc/default/projectlocker
 sudo cp /vagrant/projectlocker/application.conf /usr/share/projectlocker/conf/application.conf
 sudo cp /vagrant/projectlocker/projectlocker.service /usr/lib/systemd/system/projectlocker.service
+sudo cp /vagrant/projectlocker/postrun_settings.py /usr/share/projectlocker/postrun
+sudo cp /vagrant/projectlocker/logback.xml /usr/share/projectlocker/conf/logback.xml
+
 sudo systemctl daemon-reload
 sudo systemctl enable projectlocker
 sudo systemctl start projectlocker
+sleep 30 #wait for projectlocker service to start up, which will initialise the database tables for us so the sql below works
+sudo -u postgres /usr/pgsql-9.2/bin/psql projectlocker << SQL
+insert into "StorageEntry" (s_root_path, s_storage_type) VALUES ('/media/sf_ProjectTemplates','Local');
+insert into "StorageEntry" (s_root_path, s_storage_type) VALUES ('/media/sf_ProjectFiles','Local');
+insert into "ProjectType" (s_name,s_opens_with,s_target_version,s_file_extension) VALUES ('Premiere','Adobe Premiere Pro CC 2017.app', '11.0.2', '.prproj');
+INSERT INTO "FileEntry" (id, S_FILEPATH, K_STORAGE_ID, S_USER, I_VERSION, T_CTIME, T_MTIME, T_ATIME, B_HAS_CONTENT) VALUES (1, 'premiere_template.prproj', 1, 'noldap', 1, '2017-01-17 16:55:00.123', '2017-01-17 16:55:00.123', '2017-01-17 16:55:00.123', true);
+INSERT INTO "ProjectTemplate" (id, S_NAME, K_PROJECT_TYPE, K_FILE_REF) VALUES (1, 'Premiere test template 1', 1,1);
+
+SQL
 SHELL
   end
 end

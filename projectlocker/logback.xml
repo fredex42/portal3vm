@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%coloredLevel %logger{15} - %message%n%xException{20}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="logfile" class="ch.qos.logback.core.FileAppender">
+        <file>/var/log/projectlocker/projectlocker.log</file>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="play" level="INFO" />
+    <logger name="application" level="WARN" />
+    <logger name="Module" level="INFO"/>
+    <logger name="auth.Conf" level="INFO"/>
+    <logger name="auth.HMAC" level="INFO"/>
+    <logger name="auth.LDAP" level="INFO"/>
+    <logger name="auth.Security" level="INFO"/>
+    <logger name="auth.User" level="INFO"/>
+    <logger name="controllers.Application" level="WARN"/>
+    <logger name="controllers.DefaultsController" level="INFO"/>
+    <logger name="controllers.Files" level="INFO"/>
+    <logger name="controllers.GenericDatabaseObjectController" level="INFO"/>
+    <logger name="controllers.GenericDatabaseObjectControllerWithFilter" level="INFO"/>
+    <logger name="controllers.PlutoCommissionController" level="WARN"/>
+    <logger name="controllers.PlutoProjectTypeController" level="INFO"/>
+    <logger name="controllers.PlutoWorkingGroupController" level="INFO"/>
+    <logger name="controllers.PostrunActionController" level="DEBUG"/>
+    <logger name="controllers.ProjectEntryController" level="INFO"/>
+    <logger name="controllers.ProjectTemplateController" level="INFO"/>
+    <logger name="controllers.ProjectTypeController" level="INFO"/>
+    <logger name="controllers.StoragesController" level="INFO"/>
+    <logger name="controllers.System" level="INFO"/>
+    <logger name="drivers.PathStorage" level="INFO"/>
+    <logger name="drivers.StorageDriver" level="INFO"/>
+    <logger name="helpers.DirectoryScanner" level="INFO"/>
+    <logger name="helpers.JythonOutput" level="INFO"/>
+    <logger name="helpers.JythonRunner" level="INFO"/>
+    <logger name="helpers.PostrunDataCache" level="INFO"/>
+    <logger name="helpers.ProjectCreateHelper" level="INFO"/>
+    <logger name="helpers.ProjectCreateHelperImpl" level="INFO"/>
+    <logger name="helpers.StorageHelper" level="INFO"/>
+    <logger name="models.Defaults" level="INFO"/>
+    <logger name="models.DefaultsRow" level="INFO"/>
+    <logger name="models.DefaultsSerializer" level="INFO"/>
+    <logger name="models.FileAssociation" level="INFO"/>
+    <logger name="models.FileAssociationRow" level="INFO"/>
+    <logger name="models.FileEntry" level="INFO"/>
+    <logger name="models.FileEntryFilterTerms" level="INFO"/>
+    <logger name="models.FileEntryFilterTermsSerializer" level="INFO"/>
+    <logger name="models.FileEntryRow" level="INFO"/>
+    <logger name="models.FileEntrySerializer" level="INFO"/>
+    <logger name="models.FilterTypeWildcard" level="INFO"/>
+    <logger name="models.GeneralFilterEntryTerms" level="INFO"/>
+    <logger name="models.IncomingProjectSubtype" level="INFO"/>
+    <logger name="models.LoginRequest" level="INFO"/>
+    <logger name="models.LoginRequestSerializer" level="INFO"/>
+    <logger name="models.PlutoCommission" level="WARN"/>
+    <logger name="models.PlutoCommission$$anon$1" level="INFO"/>
+    <logger name="models.PlutoCommissionFilterTerms" level="INFO"/>
+    <logger name="models.PlutoCommissionFilterTermsSerializer" level="INFO"/>
+    <logger name="models.PlutoCommissionRow" level="INFO"/>
+    <logger name="models.PlutoCommissionSerializer" level="INFO"/>
+    <logger name="models.PlutoProjectType" level="INFO"/>
+    <logger name="models.PlutoProjectTypeRow" level="INFO"/>
+    <logger name="models.PlutoProjectTypeSerializer" level="INFO"/>
+    <logger name="models.PlutoWorkingGroup" level="INFO"/>
+    <logger name="models.PlutoWorkingGroupRow" level="INFO"/>
+    <logger name="models.PlutoWorkingGroupSerializer" level="INFO"/>
+    <logger name="models.PostrunAction" level="DEBUG"/>
+    <logger name="models.PostrunActionRow" level="INFO"/>
+    <logger name="models.PostrunActionSerializer" level="INFO"/>
+    <logger name="models.PostrunAssociation" level="INFO"/>
+    <logger name="models.PostrunAssociationRow" level="INFO"/>
+    <logger name="models.PostrunDependency" level="INFO"/>
+    <logger name="models.PostrunDependencyGraph" level="INFO"/>
+    <logger name="models.PostrunDependencyRow" level="INFO"/>
+    <logger name="models.PostrunDependencySerializer" level="INFO"/>
+    <logger name="models.ProjectEntry" level="INFO"/>
+    <logger name="models.ProjectEntryFilterTerms" level="INFO"/>
+    <logger name="models.ProjectEntryFilterTermsSerializer" level="INFO"/>
+    <logger name="models.ProjectEntryRow" level="INFO"/>
+    <logger name="models.ProjectEntrySerializer" level="INFO"/>
+    <logger name="models.ProjectRequest" level="INFO"/>
+    <logger name="models.ProjectRequestFull" level="INFO"/>
+    <logger name="models.ProjectRequestPluto" level="INFO"/>
+    <logger name="models.ProjectRequestPlutoSerializer" level="INFO"/>
+    <logger name="models.ProjectRequestSerializer" level="INFO"/>
+    <logger name="models.ProjectTemplate" level="INFO"/>
+    <logger name="models.ProjectTemplateRow" level="INFO"/>
+    <logger name="models.ProjectTemplateSerializer" level="INFO"/>
+    <logger name="models.ProjectType" level="INFO"/>
+    <logger name="models.ProjectTypeForPluto" level="INFO"/>
+    <logger name="models.ProjectTypeRow" level="INFO"/>
+    <logger name="models.ProjectTypeSerializer" level="INFO"/>
+    <logger name="models.StorageEntry" level="INFO"/>
+    <logger name="models.StorageEntryHelper" level="INFO"/>
+    <logger name="models.StorageEntryRow" level="INFO"/>
+    <logger name="models.StorageSerializer" level="INFO"/>
+    <logger name="models.StorageType" level="INFO"/>
+    <logger name="models.StorageTypeSerializer" level="INFO"/>
+    <logger name="models.UpdateTitleRequest" level="INFO"/>
+    <logger name="models.UpdateTitleRequestSerializer" level="INFO"/>
+    <logger name="services.JsonComms" level="INFO"/>
+    <logger name="services.ListenAssetFolder" level="INFO"/>
+    <logger name="services.ListenNewUuid" level="INFO"/>
+    <logger name="services.ListenProjectCreate" level="INFO"/>
+    <logger name="services.PlutoProjectTypeScanner" level="INFO"/>
+    <logger name="services.PlutoWGCommissionScanner" level="WARN"/>
+    <logger name="services.PostrunActionScanner" level="INFO"/>
+    <logger name="services.StorageScanner" level="INFO"/>
+    <logger name="services.TestModeWarning" level="INFO"/>
+    <logger name="services.actors.ClusterListener" level="INFO"/>
+    <logger name="services.actors.MessageProcessorActor" level="DEBUG"/>
+    <logger name="services.actors.MessageProcessorState" level="INFO"/>
+    <logger name="com.gargoylesoftware.htmlunit.javascript" level="OFF" />
+
+    <root level="WARN">
+        <appender-ref ref="logfile" />
+    </root>
+
+</configuration>

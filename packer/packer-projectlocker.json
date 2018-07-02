@@ -33,6 +33,11 @@
       "destination": "/home/vagrant/vagrant-insecure.pub"
     },
     {
+      "type": "file",
+      "source": "firewalld.xml",
+      "destination": "/home/vagrant/projectlocker-firewalld.xml"
+    },
+    {
       "type": "shell",
       "inline": [
         "sudo hostname projectlocker-dev",
@@ -48,7 +53,19 @@
         "sudo mount -o loop /home/vagrant/VBoxGuestAdditions.iso /mnt",
         "sudo KERN_DIR=/usr/src/kernels/`uname -r` /mnt/VBoxLinuxAdditions.run",
         "sudo umount /mnt",
-        "sudo bash -c 'echo UseDNS no >> /etc/ssh/sshd_config'"
+        "sudo bash -c 'echo UseDNS no >> /etc/ssh/sshd_config'",
+        "sudo rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.2/redhat/rhel-7-x86_64/pgdg-centos92-9.2-3.noarch.rpm",
+        "sudo yum -y install postgresql92-server",
+        "sudo su postgres -c \"/usr/pgsql-9.2/bin/initdb -D /var/lib/pgsql/9.2/data\"",
+        "sudo systemctl enable postgresql-9.2",
+        "sudo systemctl start postgresql-9.2",
+        "sudo mv /home/vagrant/projectlocker-firewalld.xml /usr/lib/firewalld/services/projectlocker.xml",
+        "sudo chown root.root /usr/lib/firewalld/services/projectlocker.xml",
+        "sudo chmod 644 /usr/lib/firewalld/services/projectlocker.xml",
+        "sudo chcon system_u:object_r:lib_t:s0 /usr/lib/firewalld/services/projectlocker.xml",
+        "sudo service firewalld restart",
+        "sudo firewall-cmd --zone=public --permanent --add-service=projectlocker"
+
         ]
     }
   ],
