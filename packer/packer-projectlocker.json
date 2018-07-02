@@ -65,7 +65,6 @@
         "sudo chcon system_u:object_r:lib_t:s0 /usr/lib/firewalld/services/projectlocker.xml",
         "sudo service firewalld restart",
         "sudo firewall-cmd --zone=public --permanent --add-service=projectlocker"
-
         ]
     }
   ],

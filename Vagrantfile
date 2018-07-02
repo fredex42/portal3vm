@@ -42,6 +42,7 @@ Vagrant.configure("2") do |config|
 
     pluto.vm.provision "file", source: "modify_config.pl", destination: "/tmp/modify_config.pl"
     pluto.vm.provision "file", source: "nginx_8000.pp", destination: "/tmp/nginx_8000.pp"
+    pluto.vm.provision "file", source: "pluto/sudo-assetfolder", destination: "/tmp/sudo-assetfolder"
     pluto.vm.provision "shell", inline: <<-SHELL
 yum clean expire-cache
 yum -y install policycoreutils-python vim swig openssl-devel libxml2-dev libxslt-dev
@@ -55,6 +56,11 @@ rabbitmqctl set_permissions -p portal portal ".*" ".*" ".*"
 sudo mv /tmp/modify_config.pl /usr/local/bin/modify_config.pl
 sudo chmod a+x /usr/local/bin/modify_config.pl
 mv /etc/nginx/conf.d/portal.conf /etc/nginx/conf.d/portal.conf.old
+
+sudo mv /tmp/sudo-assetfolder /etc/sudoers.d/assetfolder
+echo >> /etc/sudoers.d/assetfolder #ensure that there is a trailing newline or sudo gets upset
+sudo chown root.root /etc/sudoers.d/assetfolder
+sudo chmod 444 /etc/sudoers.d/assetfolder
 
 perl /usr/local/bin/modify_config.pl --filename /etc/nginx/conf.d/portal.conf.old --position 6 --text 'listen 8000;' --output /etc/nginx/conf.d/portal.conf.2
 cat /etc/nginx/conf.d/portal.conf.2 | sed 's.X-Forwarded-Host $host;.X-Forwarded-Host $host:8000;.' > /etc/nginx/conf.d/portal.conf
@@ -96,13 +102,13 @@ SHELL
     end #config.vm.define "pluto"
 
   config.vm.define "projectlocker" do |projectlocker|
-    projectlocker.vm.box = "projectlocker-base"
+    projectlocker.vm.box = "s3://gnm-multimedia-archivedtech/projectlocker/projectlocker-base.box"
 
     projectlocker.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
       vb.gui = false
       # Customize the amount of memory on the VM:
-      vb.memory = "1024"
+      vb.memory = "512"
       vb.cpus = 1
     end
 
@@ -125,7 +131,7 @@ sudo chown projectlocker /run/projectlocker
 
 #firewall rules are set up with firewalld in the packer build
 
-sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/679/projectlocker-1.0-679.noarch.rpm
+sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/717/projectlocker-1.0-717.noarch.rpm
 sudo cp /vagrant/projectlocker/defaults /etc/default/projectlocker
 sudo cp /vagrant/projectlocker/application.conf /usr/share/projectlocker/conf/application.conf
 sudo cp /vagrant/projectlocker/projectlocker.service /usr/lib/systemd/system/projectlocker.service
@@ -142,6 +148,10 @@ insert into "StorageEntry" (s_root_path, s_storage_type) VALUES ('/media/sf_Proj
 insert into "ProjectType" (s_name,s_opens_with,s_target_version,s_file_extension) VALUES ('Premiere','Adobe Premiere Pro CC 2017.app', '11.0.2', '.prproj');
 INSERT INTO "FileEntry" (id, S_FILEPATH, K_STORAGE_ID, S_USER, I_VERSION, T_CTIME, T_MTIME, T_ATIME, B_HAS_CONTENT) VALUES (1, 'premiere_template.prproj', 1, 'noldap', 1, '2017-01-17 16:55:00.123', '2017-01-17 16:55:00.123', '2017-01-17 16:55:00.123', true);
 INSERT INTO "ProjectTemplate" (id, S_NAME, K_PROJECT_TYPE, K_FILE_REF) VALUES (1, 'Premiere test template 1', 1,1);
+SELECT pg_catalog.setval('"StorageEntry_id_seq"', 3, true);
+SELECT pg_catalog.setval('"ProjectType_id_seq"', 2, true);
+SELECT pg_catalog.setval('"FileEntry_id_seq"', 2, true);
+SELECT pg_catalog.setval('"ProjectTemplate_id_seq"', 2, true);
 
 SQL
 SHELL

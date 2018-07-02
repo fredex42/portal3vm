@@ -69,6 +69,7 @@ Once the VMs are up and running, you will need to do some configuration.
 - Remote the existing `media1` storage
 - Set up a storage called `Assets` and point it at `/media/sf_Assets`. This links it to the Virtualbox shared folder which is mounted from media/Assets under your checkout in the host filesystem.
 - Set up a storage called `Scratch` and point it at `/media/sf_Scratch`
+- **Make sure that you create them in this order.** The default Pluto dev settings has `VX-2` as the Assets storage, this is needed to make the `Recreate Asset Folder` option work.
 - Go to NLE Setup, also in the admin page/menu.  Under the `Assets` storage, enter the path that the shared folder can be found in the host filesystem.
 - Go to System Settings, and under `Default upload storage` select your `Scratch` storage.
 
