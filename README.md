@@ -56,6 +56,12 @@ Once the VMs are up and running, you will need to do some configuration.
 - This should prompt you to accept the license agreement, and then ask to make some configuration of Vidispine.  Simply click Next and wait a while.
 - If all is good, then it should eventually report that Vidispine has been configured.  Clicking Next will take you to a default search page.
 
+### Set up group access
+
+- Go to `All Groups` and select the `admin` group.
+- Go to the `Metadata Groups` tab and ensure that `admin` has access to all metadata Groups
+- Also set the all three `default metadata group` options to `Asset`
+
 ### Create a user for projectlocker
 
 - Projectlocker needs a service account in order to communicate with Pluto.
@@ -73,11 +79,6 @@ Once the VMs are up and running, you will need to do some configuration.
 - Go to NLE Setup, also in the admin page/menu.  Under the `Assets` storage, enter the path that the shared folder can be found in the host filesystem.
 - Go to System Settings, and under `Default upload storage` select your `Scratch` storage.
 
-### Set up group access
-
-- Go to `All Groups` and select the `admin` group.
-- Go to the `Metadata Groups` tab and ensure that `admin` has access to all metadata Groups
-- Also set the all three `default metadata group` options to `Asset`
 
 ### Set up Pluto global metadata
 

@@ -47,6 +47,13 @@ Vagrant.configure("2") do |config|
 yum clean expire-cache
 yum -y install policycoreutils-python vim swig openssl-devel libxml2-dev libxslt-dev
 
+mkdir -p /srv/thumbnail
+chown vidispine /srv/thumbnail
+
+for x in portal-knockout-3.3.0-1 portal-codemirror-5.26.0-2 portal-chartjs-1.0-1 portal-jquery-cookie-1.4.1-1 portal-fontawesome-4.7.0-1 portal-vkbeautify-0.99.0-1; do
+  rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/gnm_portal_plugins/static/$x.noarch.rpm
+done
+
 semodule -i /tmp/nginx_8000.pp
 #ensure that rabbitmq is set up properly
 rabbitmqctl add_user portal p0rtal
@@ -99,6 +106,7 @@ chmod a+x /media/sf_work/pluto/bin/inve.sh
 sudo usermod -a -G vboxsf www-data
 sudo bash -c "echo 169.254.1.21 projectlocker >> /etc/hosts"
 SHELL
+
     end #config.vm.define "pluto"
 
   config.vm.define "projectlocker" do |projectlocker|
