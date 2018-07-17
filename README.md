@@ -175,6 +175,9 @@ postgres=# \q
 # systemctl start portal.target
 ```
 
+If you are re-installing a previous database onto a fresh image, you'll also need to run:
+`/opt/cantemo/portal/manage.py recreate_portal_index`
+
 Once you have run this, you will need to trigger re-indexes using the Admin interface
 in this order:
 
