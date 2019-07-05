@@ -69,8 +69,6 @@ if [ "$?" != "0" ]; then
   exit 2
 fi
 
-cd ${BASEPATH}/work/pluto
-
 mkdir -p ${BASEPATH}/work/portal-plugins-public
 git clone https://github.com/guardian/portal-plugins-public ${BASEPATH}/work/portal-plugins-public
 
@@ -79,6 +77,9 @@ git clone https://github.com/fredex42/portal-plugins-private ${BASEPATH}/work/po
 
 mkdir -p ${BASEPATH}/work/gnmvidispine
 git clone https://github.com/fredex42/gnmvidispine ${BASEPATH}/work/gnmvidispine
+
+mkdir -p ${BASEPATH}/work/assetsweeper
+git clone https://github.com/guardian/assetsweeper ${BASEPATH}/work/assetsweeper
 
 if [ "$?" != "0" ]; then
   echo -e "\x1B[31mERROR\x1B[0m Unable to checkout guardian plugins.  Please contact multimediatech@theguardian.com to request access."

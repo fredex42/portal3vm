@@ -1,0 +1,2 @@
+www-data  ALL=(root) NOPASSWD: /opt/cantemo/portal/portal/plugins/gnm_asset_folder/scripts/mkdir_on_behalf_of.pl
+vagrant   ALL=(postgres) NOPASSWD: /bin/psql,/bin/createuser,/bin/createdb

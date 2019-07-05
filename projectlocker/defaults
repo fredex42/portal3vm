@@ -1,0 +1,38 @@
+# #####################################
+# ##### Environment Configuration #####
+# #####################################
+
+# To use your own template create
+#   src/templates/etc-default-systemv
+# see http://www.scala-sbt.org/sbt-native-packager/archetypes/cheatsheet.html#server-app-config-src-templates-etc-default-systemv-systemd
+
+# This file is parsed by systemd. You can modify it to specify environment
+# variables for your application.
+#
+# For a description of the format, see: `man systemd.exec`, section
+# `EnvironmentFile`.
+
+# Available replacements
+# see http://www.scala-sbt.org/sbt-native-packager/archetypes/systemloaders.html#override-start-script
+# --------------------------------------------------------------------
+# Name                   Contains                     Current value
+# (remove space)
+# $ {{author}}           debian author
+# $ {{descr}}            debian package description   A system to manage, backup and archive multimedia project files
+# $ {{exec}}             startup script name          projectlocker
+# $ {{chdir}}            app directory                /usr/share/projectlocker
+# $ {{retries}}          retries for startup          0
+# $ {{retryTimeout}}     retry timeout                60
+# $ {{app_name}}         normalized app name          projectlocker
+# $ {{app_main_class}}   main class/entry point       ${{app_main_class}}
+# $ {{daemon_user}}      daemon user                  projectlocker
+# $ {{daemon_group}}     daemon group                 projectlocker
+# --------------------------------------------------------------------
+
+# Setting JAVA_OPTS
+# -----------------
+JAVA_OPTS="-Dpidfile.path=/var/run/projectlocker/play.pid -Dplay.evolutions.db.default.autoApply=true"
+
+# Setting PIDFILE
+# ---------------
+# PIDFILE="/var/run/projectlocker/play.pid"

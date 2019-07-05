@@ -1,0 +1,22 @@
+[Unit]
+Description=A system to manage, backup and archive multimedia project files
+Requires=postgresql-9.2.service network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/projectlocker
+EnvironmentFile=/etc/default/projectlocker
+ExecStart=/usr/share/projectlocker/bin/projectlocker
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=60
+SuccessExitStatus=
+User=projectlocker
+ExecStartPre=/bin/mkdir -p /run/projectlocker
+ExecStartPre=/bin/chown projectlocker:projectlocker /run/projectlocker
+ExecStartPre=/bin/chmod 755 /run/projectlocker
+PermissionsStartOnly=true
+LimitNOFILE=1024
+
+[Install]
+WantedBy=multi-user.target

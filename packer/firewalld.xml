@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>Projectlocker</short>
+  <description>Manages Multimedia project files</description>
+  <port protocol="tcp" port="9000"/>
+</service>
