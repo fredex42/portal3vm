@@ -182,10 +182,9 @@ sudo useradd projectlocker
 sudo mkdir -p /run/projectlocker
 sudo chown projectlocker /run/projectlocker
 
-echo "RAVEN_CONFIG = {'dsn': 'https://no.dsn' }" >> /opt/cantemo/portal/portal/localsettings.py
 #firewall rules are set up with firewalld in the packer build
-
-sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/717/projectlocker-1.0-717.noarch.rpm
+sudo yum -y install vim
+sudo rpm -Uvh https://s3-eu-west-1.amazonaws.com/gnm-multimedia-deployables/projectlocker/937/projectlocker-1.0-937.noarch.rpm
 sudo cp /vagrant/projectlocker/defaults /etc/default/projectlocker
 sudo cp /vagrant/projectlocker/application.conf /usr/share/projectlocker/conf/application.conf
 sudo cp /vagrant/projectlocker/projectlocker.service /usr/lib/systemd/system/projectlocker.service
