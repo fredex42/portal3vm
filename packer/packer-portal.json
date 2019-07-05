@@ -3,8 +3,8 @@
     {
       "type": "virtualbox-iso",
       "guest_os_type": "RedHat_64",
-      "iso_url": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1708.iso",
-      "iso_checksum": "bba314624956961a2ea31dd460cd860a77911c1e0a56e4820a12b9c5dad363f5",
+      "iso_url": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1810.iso",
+      "iso_checksum": "38d5d51d9d100fd73df031ffd6bd8b1297ce24660dc8c13a3b8b4534a4bd291c",
       "iso_checksum_type": "sha256",
       "disk_size": 8000,
       "http_directory": ".",
@@ -52,8 +52,8 @@
     },
     {
       "type": "file",
-      "source": "portal_install/RedHat7_Portal_3.4.0.tar",
-      "destination": "/tmp/RedHat7_Portal_3.4.0.tar"
+      "source": "portal_install/RedHat7_Portal_3.4.11.tar",
+      "destination": "/tmp/RedHat7_Portal_3.4.11.tar"
     },
     {
       "type": "file",
@@ -66,9 +66,9 @@
         "sudo mkdir /opt/install",
         "sudo chown vagrant /opt/install",
         "cd /opt/install",
-        "tar xvf /tmp/RedHat7_Portal_3.4.0.tar",
-        "rm -f /tmp/RedHat7_Portal_3.4.0.tar",
-        "cd RedHat7_Portal_3.4.0",
+        "tar xvf /tmp/RedHat7_Portal_3.4.11.tar",
+        "rm -f /tmp/RedHat7_Portal_3.4.11.tar",
+        "cd RedHat7_Portal_3.4.11",
         "sudo yum -y install curl memcached sudo lsof GConf2 ORBit2 OpenEXR-libs ghostscript ghostscript-fonts ilmbase libIDL libXfont libcroco libfontenc libgsf librsvg2 libwmf-lite sgml-common postgresql xorg-x11-font-utils zlib libxslt SDL libXxf86vm libtool-ltdl mesa-dri-drivers mesa-dri-filesystem mesa-libGL mesa-libGLU mesa-private-llvm tcl tk unixODBC java-1.8.0-openjdk postgresql java_cup libart_lgpl zip redhat-lsb log4j postgresql-jdbc apr apr-util boost boost-date-time boost-filesystem boost-graph boost-iostreams boost-program-options boost-python boost-regex boost-serialization boost-signals boost-system boost-test boost-thread boost-wave libicu java-1.8.0-openjdk python python-libs python-backports python-backports-ssl_match_hostname python-chardet python-six postgresql libvorbis graphviz libxslt unzip libtheora xerces-c",
         "sudo ./setup --key-file /tmp/license.key --vidispine-password admin",
         "sudo systemctl stop firewalld",
