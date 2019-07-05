@@ -17,7 +17,7 @@ end
 # you're doing.
 Vagrant.configure("2") do |config|
   config.vm.define "pluto" do |pluto|
-    pluto.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_340.box"
+    pluto.vm.box = "s3://gnm-multimedia-archivedtech/portal/Portal_3411.box"
     pluto.vm.network "private_network", ip: "169.254.1.20"
     pluto.vm.network "forwarded_port", guest: 8000, host: 8000
     pluto.vm.network "forwarded_port", guest: 8008, host: 8008
@@ -155,7 +155,7 @@ SHELL
     end #config.vm.define "pluto"
 
   config.vm.define "projectlocker" do |projectlocker|
-    projectlocker.vm.box = "s3://gnm-multimedia-archivedtech/projectlocker/projectlocker-base.box"
+    projectlocker.vm.box = "s3://gnm-multimedia-archivedtech/projectlocker/projectlocker-base-v2.box"
 
     projectlocker.vm.provider "virtualbox" do |vb|
       # Display the VirtualBox GUI when booting the machine
